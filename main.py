@@ -1,6 +1,8 @@
 # execute this file
 from utils import init
 from utils import oneM2M
+from sensors import mock_data
+from time import sleep
 
 def run():
     pass
@@ -18,19 +20,23 @@ if __name__ == '__main__':
         exit()
 
     if buoy.mock:   # buoy.mock == True
-        cnt_rn = "sensor1"
-        if not oneM2M.check_cnt(server.url, buoy.buoy_name, cnt_rn):
-            print(f"failed to find the CNT {cnt_rn}")
+        cnt_rn = ["accelerometer", "gps", "ultrasonic"]
+        for rn in cnt_rn:
+            if not oneM2M.check_cnt(server.url, buoy.buoy_name, rn):
+                print(f"failed to find the CNT {rn}")
 
-        sensor_value = "123"
-        if not oneM2M.create_cin(server.url, buoy.buoy_name, cnt_rn, sensor_value):
-            print(f"failed to create cin")
-
-        print("success!")
-
-        headers = oneM2M.Headers(ri='retrieve_cin_all')
-        response = oneM2M.requests.get(f"{server.url}/{buoy.buoy_name}/{cnt_rn}?fu=1&ty=4&lbl={cnt_rn}", headers=headers.headers)
-        print(response.json())
+        datas = mock_data.get_sensor_data()
+        for i in range(10):
+            # print(list(map(str, datas)))
+            cin_value = list(map(str, datas))
+            for rn, value in zip(cnt_rn, cin_value):
+                if not oneM2M.create_cin(server.url, buoy.buoy_name, rn, value):
+                    print(f"failed to create cin for {rn}")
+            for rn in cnt_rn:
+                response = oneM2M.requests.get(f"{server.url}/{buoy.buoy_name}/{rn}?fu=1&ty=4&lbl={rn}", headers=oneM2M.Headers(ri='retrieve_cin_all').headers)
+                print(response.json())
+            sleep(10)
+            datas = mock_data.get_sensor_data(datas)
 
     else:   # run with sensors (realtime). TBD.
         pass
