@@ -1,6 +1,5 @@
 import requests
 
-### Headers
 class Headers:
     def __init__(self, ri='please_set_ri', content_type=None):
         self.headers = {
@@ -22,14 +21,16 @@ class Headers:
     @staticmethod
     def get_content_type(content_type):
         types = {
+            'acp': 1,
             'ae': 2,
             'cnt': 3,
             'cin': 4,
-            'cb': 5
+            'cb': 5,
+            'grp': 9,
+            'sub': 23
         }
         return types.get(content_type, None)
 
-### Retrieve CSE Base
 def check_cse(url):
     headers = Headers(ri='retrieve_cse_base', content_type='cb')
     try:
@@ -89,6 +90,38 @@ def check_cnt(url, ae_rn, cnt_rn):
             }
             try:
                 response = requests.post(f"{url}/{ae_rn}", headers=headers.headers, json=body)
+                if response.status_code == 201:
+                    return True
+                else:
+                    print(f"ERROR occurred: Response status: {response.status_code}")
+                    return False
+            except requests.exceptions.RequestException as e:
+                print(f"ERROR occurred: {e}")
+                return False
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR occurred: {e}")
+        return False
+
+def check_grp(url, cb, ae_rn, sensors):
+    headers = Headers(ri='retrieve_grp', content_type='grp')
+    try:
+        response = requests.get(f"{url}/grp_{ae_rn}", headers=headers.headers)
+        if response.status_code == 200:
+            return True
+        else:
+            headers.headers['X-M2M-RI'] = 'create_grp'
+            body = {
+                "m2m:grp": {
+                    "rn": f"grp_{ae_rn}",
+                    "mid": [f"{cb}/{ae_rn}/{sensor}" for sensor in sensors],
+                    "mnm": 4,
+                    "mt": 3,
+                    "csy": 3
+                }
+            }
+            print(body)
+            try:
+                response = requests.post(f"{url}", headers=headers.headers, json=body)
                 if response.status_code == 201:
                     return True
                 else:

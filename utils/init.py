@@ -23,12 +23,22 @@ class Buoy:
     def __init__(self):
         self.buoy_name = None
         self.mock = False
+        self.sensors = dict()
 
     def set_buoy_name(self, buoy_name):
         self.buoy_name = buoy_name
 
     def set_mock(self, mock):
-        self.mock = bool(mock)
+        if mock == "TRUE":
+            self.mock = True
+
+    def set_sensors(self, sensors):
+        for sensor, status in sensors:
+            if status == "TRUE":
+                self.sensors[sensor] = None
+
+    def update_sensors(self, sensors):
+        self.sensors.update(sensors)
 
 def read_config():
     server = Server()
@@ -47,6 +57,7 @@ def read_config():
         # set Buoy info
         buoy.set_buoy_name(config['BUOY']['buoy name'])
         buoy.set_mock(config['BUOY']['mock'])
+        buoy.set_sensors(config.items('SENSORS'))
 
     except Exception as e:
         print(f"ERROR occurred: {e}. Please check config.ini.")
