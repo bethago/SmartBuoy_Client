@@ -119,7 +119,6 @@ def check_grp(url, cb, ae_rn, sensors):
                     "csy": 3
                 }
             }
-            print(body)
             try:
                 response = requests.post(f"{url}", headers=headers.headers, json=body)
                 if response.status_code == 201:
