@@ -40,11 +40,9 @@ if __name__ == '__main__':
         for sensor, value in buoy.sensors.items():
             if not oneM2M.create_cin(server.url, buoy.buoy_name, sensor, str(value)):
                 print(f"failed to create cin for {sensor}")
-
-        # for check
-        for sensor in buoy.sensors.keys():
-            response = oneM2M.requests.get(f"{server.url}/{buoy.buoy_name}/{sensor}?fu=1&ty=4&lbl={sensor}", headers=oneM2M.Headers(ri='retrieve_cin_all').headers)
-            print(response.json())
-        #
-
+            else:
+                print(f"created cin for {sensor}")
         sleep(5)
+        #for sensor in buoy.sensors.keys():
+        #    response = oneM2M.requests.get(f"{server.url}/{buoy.buoy_name}/{sensor}?fu=1&ty=4&lbl={sensor}", headers=oneM2M.Headers(ri='retrieve_cin_all').headers)
+        #    print(response.json())
