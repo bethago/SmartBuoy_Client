@@ -3,7 +3,8 @@ import random
 values = {'accelerometer':[0, 0, 0], 'gps':[37.500000, 131.000000, 0.0], 'ultrasonic':[0], 'temperature':[11.0]}
 
 def modify_randomly(values):
-    return [round(value + random.uniform(-0.1, 0.1), 6) for value in values]
+    # return [round(value + random.uniform(-0.1, 0.1), 6) for value in values]
+    return [round(value + random.uniform(-1, 1), 6) for value in values]
 
 def set_sensors(buoy):
     sensor_datas = buoy.sensors
