@@ -14,16 +14,16 @@ if __name__ == '__main__':
         exit()
 
     if not oneM2M.check_ae(server.url, buoy.buoy_name):
-        print(f"Unable to find the AE {buoy.buoy_name}.")
+        print(f"Unable to create the AE {buoy.buoy_name}.")
         exit()
 
     for sensor in buoy.sensors:
         if not oneM2M.check_cnt(server.url, buoy.buoy_name, sensor):
-            print(f"failed to find the CNT {sensor}")
+            print(f"failed to create the CNT {sensor}")
             exit()
 
     if not oneM2M.check_grp(server.url, server.cse_base, buoy.buoy_name, buoy.sensors.keys()):
-        print(f"failed to find the GRP grp_{buoy.buoy_name}")
+        print(f"failed to create the GRP grp_{buoy.buoy_name}")
         exit()
 
     fetch_data = None

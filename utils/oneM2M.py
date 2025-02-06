@@ -1,10 +1,11 @@
 import requests
+from utils.init import X_M2M_ORIGIN
 
 class Headers:
     def __init__(self, ri='please_set_ri', content_type=None):
         self.headers = {
             'Accept': 'application/json',
-            'X-M2M-Origin': 'CAdmin',
+            'X-M2M-Origin': X_M2M_ORIGIN,
             'Content-Type': 'application/json',
             'X-M2M-RVI': '3',
             'X-M2M-RI': ri
@@ -54,9 +55,9 @@ def check_ae(url, ae_rn):
             body = {
                 "m2m:ae": {
                     "rn": ae_rn,
-                    "api": "NBuoy",
+                    "api": f"N{ae_rn}",
                     "rr": True,
-                    "lbl": ["buoy1", "test"],
+                    "lbl": [ae_rn, "device"],
                     "srv": ["3"]
                 }
             }

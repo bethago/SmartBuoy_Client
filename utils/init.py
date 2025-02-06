@@ -64,5 +64,9 @@ def read_config():
 
     return server, buoy
 
+config = configparser.ConfigParser()
+config.read('config.ini')
+X_M2M_ORIGIN = config['BUOY']['origin']
+
 if __name__ == "__main__":
     print("err: Please run main.py.")
