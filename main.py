@@ -31,7 +31,7 @@ if __name__ == '__main__':
         mock_data.set_sensors(buoy)
         fetch_data = mock_data.get_sensor_data
 
-    else:   # run with sensors (realtime). TBD.
+    else:   # run with sensors (realtime).
         # fetch_data = sensors.get_sensor_data(buoy)
         pass
 
@@ -42,7 +42,4 @@ if __name__ == '__main__':
                 print(f"failed to create cin for {sensor}")
             else:
                 print(f"created cin for {sensor}")
-        sleep(2)
-        #for sensor in buoy.sensors.keys():
-        #    response = oneM2M.requests.get(f"{server.url}/{buoy.buoy_name}/{sensor}?fu=1&ty=4&lbl={sensor}", headers=oneM2M.Headers(ri='retrieve_cin_all').headers)
-        #    print(response.json())
+        sleep(1)
