@@ -1,12 +1,11 @@
 import random
 
-values = {'accelerometer':[0, 0, 0], 'gps':[37.500000, 131.000000, 0.0], 'ultrasonic':[0], 'temperature':[11.0]}
+values = {'accelerometer':[0, 0, 0], 'gps':[38.082065, 129.395401, 0.0], 'ultrasonic':[0], 'temperature':[11.0]}
 
 def modify_randomly(values):
     new_values = []
     for value in values:
-        # modified_value = round(value + random.uniform(-0.1, 0.1), 6)
-        modified_value = round(value + random.uniform(-5, 5), 6)
+        modified_value = round(value + random.uniform(-0.1, 0.1), 6)
         if modified_value < 0:
             modified_value = 0
         new_values.append(modified_value)
